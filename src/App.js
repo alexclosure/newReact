@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 // Реализация из мана в задании
 export const App = () => {
-	/* 	const header = () => {
+	const header = () => {
 		return React.createElement("header", { className: "App-header" }, logoImg(), p(), a(), newDate);
 	};
 	const logoImg = () => {
@@ -26,11 +26,11 @@ export const App = () => {
 	};
 
 	const newDate = new Date().getFullYear();
-	return React.createElement("div", { className: "App" }, header()); */
+	return React.createElement("div", { className: "App" }, header());
 
 	//Реализация из моих познаний чистого HTML
 
-	const headDiv = document.createElement("div");
+	/* 	const headDiv = document.createElement("div");
 	headDiv.className = "App";
 
 	const header = document.createElement("header");
@@ -53,7 +53,7 @@ export const App = () => {
 
 	header.append(logoImg, p, a);
 	headDiv.append(header, new Date().getFullYear());
-	document.body.append(headDiv);
+	document.body.append(headDiv); */
 
 	// оригинальный код из задания
 
