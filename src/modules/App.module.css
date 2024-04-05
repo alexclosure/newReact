@@ -70,3 +70,7 @@
 .listItem:not(:last-child) {
 	margin-bottom: 0.5em;
 }
+
+.textDanger {
+	color: red;
+}
