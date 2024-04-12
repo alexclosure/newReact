@@ -6,9 +6,16 @@ export const App = () => {
 	const [steps] = useState([...data])
 	const [activeIndex, setActiveIndex] = useState(0)
 	//первый и последний шаг
-	const firstStep = steps[0].id
-	const lastStep = steps[steps.length - 1].id
+	const firstStep = 1
+	const lastStep = steps.length
+
+	const manualClick = (event) => {
+		setActiveIndex(+event.target.textContent - 1)
+		const test = event.target.textContent
+		console.log(test)
+	}
 	//кнопка вперед возвращает jsx с текстом кнопки и надписью под ней
+
 	const clickForward = () => {
 		if (activeIndex < steps.length - 1) {
 			return (
@@ -25,8 +32,8 @@ export const App = () => {
 			//тут сам себе немного усложнил, item.id можно заменить так же на index
 			if (index === activeIndex && item.id - 1 >= 1) {
 				return (
-					(<div className={styles["steps-content"]}>{item.content}</div>),
-					(<button className={styles["steps-item-button"]}>{item.title}</button>),
+					(<div className={styles["steps-content"]}></div>),
+					(<button className={styles["steps-item-button"]}></button>),
 					setActiveIndex(activeIndex - 1)
 				)
 			}
@@ -64,7 +71,10 @@ export const App = () => {
 								}
 								key={index}
 							>
-								<button className={styles["steps-item-button"]}>{index + 1}</button> {item.title}
+								<button className={styles["steps-item-button"]} onClick={manualClick}>
+									{index + 1}
+								</button>{" "}
+								{item.title}
 							</li>
 						))}
 					</ul>
