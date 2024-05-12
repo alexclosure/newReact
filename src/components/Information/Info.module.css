@@ -1,0 +1,8 @@
+.button {
+	display: flex;
+	flex-wrap: wrap;
+	width: flex;
+	height: flex;
+	border: 3px solid #3db1ff;
+	box-shadow: 0 0 100px 1px #3db1ff;
+}
