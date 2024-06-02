@@ -1,68 +1,60 @@
-import styles from "./App.css";
-import React, { useState, useRef } from "react";
+import styles from "./App.module.css";
+import React from "react";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+
+const fieldsScheme = yup.object().shape({
+  email: yup.string().required("Введите почту"),
+  password: yup
+    .string()
+    .required("Введите пароль")
+    .max(20, "Пароль должен быть не более 20 символов")
+    .min(5, "Пароль должен быть не менее  5 символов"),
+  cPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Пароли не совпадают"),
+});
 
 export const App = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [cPassword, setCPassword] = useState("");
-  const [error, setError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+      cPassword: "",
+    },
+    resolver: yupResolver(fieldsScheme),
+    mode: "onTouched",
+  });
 
-  const submitButtonRef = useRef(null);
-
-  const onEmailChange = ({ target }) => setEmail(target.value);
-  const onPasswordChange = ({ target }) => {
-    setPassword(target.value);
-    target.value.length < 8
-      ? setError("Длина пароля должна быть не менее 8 символов")
-      : setError(null);
+  const getErrorMessages = () => {
+    let loginError = "";
+    if (Object.keys(errors.length > 0)) {
+      loginError = Object.keys(errors)
+        .map((key) => (loginError = `${errors[key]?.message} \n`))
+        .join("");
+    }
+    return loginError;
   };
 
-  const onCPasswordChange = ({ target }) => {
-    setCPassword(target.value);
-    password !== target.value
-      ? setError("Пароли не совпадают")
-      : setError(null);
-
-    setTimeout(() => {
-      if (submitButtonRef.current) {
-        submitButtonRef.current.focus();
-        console.log(`match`);
-      }
-    }, 0);
+  const onSubmit = (data) => {
+    console.log(`Данные формы`, data);
   };
 
   return (
     <div className={styles.app}>
-      <form>
-        {error && <div className={styles.error}>{error}</div>}
-        <input
-          name="email"
-          type="email"
-          value={email}
-          placeholder="email"
-          onChange={onEmailChange}
-        />
-        <input
-          name="password"
-          type="password"
-          value={password}
-          placeholder="password"
-          //minLength="8"
-          onChange={onPasswordChange}
-        />
-        <input
-          name="confirmPassword"
-          type="password"
-          value={cPassword}
-          placeholder="confirm password"
-          onChange={onCPasswordChange}
-        />
-        <button
-          name="registr"
-          type="submit"
-          ref={submitButtonRef}
-          disabled={!!error || !password || !cPassword}
-        >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {getErrorMessages() && (
+          <div className={styles.errorLabel}>{getErrorMessages()}</div>
+        )}
+        <input name="email" type="email" {...register("email")} />
+        <input name="password" type="password" {...register("password")} />
+        <input name="cPassword" type="password" {...register("cPassword")} />
+        <button type="submit" disabled={!isValid}>
           Зарегаться
         </button>
       </form>
